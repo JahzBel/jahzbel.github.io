@@ -3,20 +3,21 @@ name: Deploy to Surge
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install Surge
-        run: npm install --global surge
-
-      - name: Deploy to Surge
-        env:
+    - name: Build and Deploy
+      env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-        run: surge ./ --domain jahzbel.surge.sh --token $SURGE_TOKEN
+      run: |
+        npm install --global surge
+        surge token $SURGE_TOKEN e
+
+        surge --project ./ --domain jahzbel.surge.sh 
